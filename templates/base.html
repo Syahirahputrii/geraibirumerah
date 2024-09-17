@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerai Biru Merah</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Gerai Biru Merah</h1>
+    
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Price:</strong> {{ price }}</p>
+    <p><strong>Description:</strong> {{ description }}</p>
+
+    <h2>Kamu menyimpan {{ total_products }} product pada aplikasi ini</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.description }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No products available.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="{% url 'main:create_product' %}"><button class="add-button">Add New Product</button></a>
+</body>
+</html>

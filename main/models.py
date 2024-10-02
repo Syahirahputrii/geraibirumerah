@@ -8,8 +8,8 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     description = models.TextField()
+    product_image = models.ImageField(upload_to='product_images/', null=True, blank=True)  # Field untuk gambar
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-@property
-def __str__(self):
-    return f"{self.name} {self.price} {self.description}"
+    def __str__(self):
+        return f"{self.name} - {self.price} - {self.description}"

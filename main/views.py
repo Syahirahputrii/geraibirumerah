@@ -12,16 +12,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
-# Create your views here.
-# def show_main(request):
-#     context = {
-#         'name' : 'Jacket',
-#         'price': 'Rp 100.000,00',
-#         'description': 'Lengan panjang dan memiliki hoodie'
-#     }
-
-#     return render(request, "main.html", context)
+from .forms import ProductForm
 
 @login_required(login_url='/login') 
 def show_main(request):
@@ -38,15 +29,17 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def create_product(request):
-    form = ProductForm(request.POST or None)
+    form = ProductForm(request.POST or None, request.FILES or None)  # Menambahkan request.FILES
 
     if form.is_valid() and request.method == "POST":
-        mood_entry = form.save(commit=False)
-        mood_entry.user = request.user
-        mood_entry.save()
+        product_entry = form.save(commit=False)
+        product_entry.user = request.user
+        product_entry.save()
         return redirect('main:show_main')
+
     context = {'form': form}
     return render(request, "create_product.html", context)
+
 
 def show_xml(request):
     data = Product.objects.all()
@@ -96,3 +89,26 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response    
+
+def edit_product(request, id):
+    # Get product berdasarkan id
+    product = Product.objects.get(pk=id)
+
+    # Set product entry sebagai instance dari form
+    form = ProductForm(request.POST or None, request.FILES or None, instance=product)  # Menambahkan request.FILES
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    # Get product berdasarkan id
+    product = Product.objects.get(pk = id)
+    # Hapus product
+    product.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+<title>Edit Product</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="flex flex-col min-h-screen bg-gray-100">
+  <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
+    <h1 class="text-3xl font-bold text-center mb-8 text-black">Edit Deskripsi Product</h1>
+  
+    <div class="bg-white rounded-lg p-6 form-style">
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+          
+          <!-- Loop untuk field dinamis (misalnya nama dan deskripsi) -->
+          {% for field in form %}
+              <div class="flex flex-col">
+                  <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
+                      {{ field.label }}
+                  </label>
+                  <div class="w-full">
+                      {{ field }}
+                  </div>
+                  {% if field.help_text %}
+                      <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                  {% endif %}
+                  {% for error in field.errors %}
+                      <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                  {% endfor %}
+              </div>
+          {% endfor %}
+          
+          <!-- Tambahkan input untuk upload gambar -->
+          <div class="flex flex-col">
+              <label for="product_image" class="block text-gray-700 text-sm font-bold mb-2">
+                  Upload Image:
+              </label>
+              <input type="file" name="product_image" id="product_image" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          
+          <!-- Tombol Submit -->
+          <div class="flex justify-center mt-6">
+              <button type="submit" class="bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
+                  Edit Product
+              </button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

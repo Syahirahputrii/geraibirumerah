@@ -13,7 +13,6 @@
     <div class="bg-white rounded-lg p-6 form-style">
       <form method="POST" enctype="multipart/form-data" class="space-y-6">
           {% csrf_token %}
-          
           <!-- Loop untuk field dinamis (misalnya nama dan deskripsi) -->
           {% for field in form %}
               <div class="flex flex-col">
@@ -32,18 +31,10 @@
               </div>
           {% endfor %}
           
-          <!-- Tambahkan input untuk upload gambar -->
-          <div class="flex flex-col">
-              <label for="product_image" class="block text-gray-700 text-sm font-bold mb-2">
-                  Upload Image:
-              </label>
-              <input type="file" name="product_image" id="product_image" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-          </div>
-          
           <!-- Tombol Submit -->
           <div class="flex justify-center mt-6">
               <button type="submit" class="bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
-                  Edit Product
+                  Simpan Hasil Suntingan
               </button>
           </div>
       </form>
